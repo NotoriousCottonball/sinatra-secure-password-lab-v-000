@@ -7,12 +7,14 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "password_security"
   end
 
-  get "/" do
+  get '/' do
+    response.set_cookie("credit_amount", :value => "secret_value")
     erb :index
   end
 
-  get "/signup" do
-    erb :signup
+  get '/signup' do
+     @cookie = request.cookies["credit_amount"]
+     erb :signup
   end
 
   post "/signup" do
@@ -25,7 +27,7 @@ class ApplicationController < Sinatra::Base
     end
   end
 
-  get '/account' do
+  get "/account" do
     @user = User.find(session[:user_id])
     erb :account
   end
